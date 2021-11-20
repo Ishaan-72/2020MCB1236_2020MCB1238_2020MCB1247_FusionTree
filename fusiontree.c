@@ -47,7 +47,7 @@ struct db* DiffBits(struct root* rt,struct FusionTree* p){
     res=(struct db*)malloc(sizeof(struct db));
     int bits=0;
     for(int i=0;i<p->n;i++){
-        if(p->key[i]==NULL)break;
+        if(p->key[i]==0)break;
         for(int j=0;j<i;j++){
             int w=rt->w;
             while(((p->key[i] & 1 << w)==(p->key[j] & 1 << w)) && w>=0){
@@ -127,6 +127,89 @@ int sketchap(struct root* rt,struct FusionTree* p, int x){
     res = res & p->mask_bm;
     return res;
 }
+struct FusionTree *root;
+struct FusionTree* allocateNode(int tn){
+	struct FusionTree *temp;
+	temp=(struct FusionTree*)malloc(sizeof(struct FusionTree));
+	temp->key = (int*)malloc((2*tn)*sizeof(int));
+	temp->leaf=1;
+	temp->next = (struct FusionTree **)malloc((2*tn)*sizeof(struct FusionTree *));
+	for(int i=0;i<2*tn;i++){
+		temp->next[i]=NULL;
+	}
+	return temp;
+	
+}
+//Creates a empty fusiontree
+void fusionTreeCreate(int ta){
+	struct FusionTree* temp = allocateNode(ta);//Allocates space and initialize values for root node
+	temp->n=0;
+	root = temp;
+	
+} 
+// Performs split child operation
+void fusionTreeSplitChild(struct FusionTree *p,int i,int ta){
+	struct FusionTree *z= allocateNode(ta);
+	struct FusionTree *y= p->next[i];
+	z->leaf=y->leaf;
+	z->n=ta-1;
+	for(int j=0;j<ta-1;j++){
+		z->key[j]=y->key[j+ta];
+	}
+	if(y->leaf==0){
+		for(int j=0;j<ta;j++){
+			z->next[j]=y->next[j+ta];
+		}
+	}
+	y->n=ta-1;
+	for(int j=p->n;j>i;j--){
+		p->next[j+1]=p->next[j];
+	}
+	p->next[i+1]=z;
+	for(int j=p->n-1;j>i-1;j--){
+		p->key[j+1]=p->key[j];
+	}
+	p->key[i]=y->key[ta-1];
+	p->n++;
+}
+void fusionTreeInsertNonfull(struct FusionTree *p,int k, int ta){
+	int i=p->n-1;
+	if(p->leaf==1){
+		while(i>=0 && k<p->key[i]){
+			p->key[i+1]=p->key[i];
+			i--;
+		}
+		p->key[i+1]=k;
+		p->n++;
+	}
+	else{
+		while(i>=0 && k<p->key[i]){
+			i--;
+		}
+		i++;
+		if(p->next[i]->n==2*ta-1){
+			fusionTreeSplitChild(p,i,ta);
+			if(k>p->key[i])
+				i++;
+		}
+		fusionTreeInsertNonfull(p->next[i],k,ta);
+	}
+}
+void fusionTreeInsert(int k,int ta){
+	struct FusionTree *r = root;
+	if(r->n == 2*ta-1){
+		struct FusionTree *s = allocateNode(ta);
+		s->leaf=0;
+		s->n=0;
+		s->next[0]=r;
+		root=s;
+		fusionTreeSplitChild(s,0,ta);
+		fusionTreeInsertNonfull(s,k,ta);
+	}
+	else{
+		fusionTreeInsertNonfull(r,k,ta);
+	}
+}
 
 //function to initiate a node of our fusion tree
 void initiatenode(struct root* rt,struct FusionTree* p){
@@ -159,7 +242,20 @@ void initiatenode(struct root* rt,struct FusionTree* p){
         }
     }
 }
-
+// This function use parallel comparision to compare keys in node
+int paracomp(struct root *rt,struct FusionTree *p,int data){
+int sketch = sketchap(rt,p,data);
+int sketch_long = sketch*p->mask_q;
+int res = p->node_sketch-sketch_long;
+res = res&p->mask_sketch;
+int i=0;
+while((1<<i)<res){
+    i++;
+}
+i++;
+int sketch_len = p->n*p->n*p->n+1;
+return (p->n-(i/sketch_len));
+}
 int main(){
     return 0;
 }
