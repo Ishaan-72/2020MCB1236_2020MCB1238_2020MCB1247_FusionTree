@@ -293,7 +293,7 @@ int successor(struct root *rt,struct FusionTree *p,int data){
     }
 
     int pos = paracomp(rt,p,data);
-
+if(pos>=p->n)pos-=p->n;
     
     if(pos==0){
         pos++;
@@ -312,6 +312,8 @@ int successor(struct root *rt,struct FusionTree *p,int data){
     int temp = common_prefix | (1<<i);
 
     pos = paracomp(rt,p,temp);
+	
+	if(pos>=p->n)pos-=p->n;
 
     if(p->leaf==1)return p->key[pos];
     else{
@@ -342,7 +344,7 @@ int predecessor(struct root *rt,struct FusionTree *p,int data){
         }
     }
     int pos = paracomp(rt,p,data);
-
+if(pos>=p->n)pos-=p->n;
     if(pos==0){
         pos++;
     }
@@ -360,7 +362,7 @@ int predecessor(struct root *rt,struct FusionTree *p,int data){
     int temp = common_prefix | (1<<i);
 
     pos = paracomp(rt,p,temp);
-
+if(pos>=p->n)pos-=p->n;
     if(pos==0){
         if(p->leaf==1)return p->key[pos];
         int res = predecessor(rt,p->next[1],data);
