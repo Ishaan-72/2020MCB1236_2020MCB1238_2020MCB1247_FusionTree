@@ -158,7 +158,8 @@ void fusionTreeCreate(){
 	temp->c=0.2;
 	temp->t=maxi(pow(temp->wor_len,temp->c),2);
 	temp->w=pow(temp->t,1/temp->c);
-	temp->r = allocateNode(temp->t);//Allocates space and initialize values for root node
+	int ta=2;
+	temp->r = allocateNode(ta);//Allocates space and initialize values for root node
 	temp->r->n=0;
 	root = temp;
 } 
@@ -399,5 +400,60 @@ void initiateTree(struct root* rt){
 }
 
 int main(){
+    fusionTreeCreate();
+    
+    int lp=0;
+    while(lp==0){
+        char op;
+		printf("options: I for insertion, S for sucessor, P for predecessor , E for exit\n");
+        scanf(" %c",&op);
+        if(op=='I'){
+            printf("Enter number of elements you wanted to enter:");
+            int ne;
+            scanf("%d",&ne);
+            int *arr;
+            arr=(int *)malloc(ne*sizeof(int));
+            printf("Please enter the elements without any commas. for example to enter three numbers, enter them with a space between them like: 10 30 20\n");
+            for(int i=0;i<ne;i++){
+                scanf("%d",&arr[i]);
+                fusionTreeInsert(arr[i],root->t);
+            }
+        }
+        else if(op=='S'){
+            struct root* rt=root;
+            initiateTree(rt);
+            int sr;
+            printf("Enter an element to find sucessor of:\n");
+            scanf("%d",&sr);
+            int res = successor(root,root->r,sr);
+            if(res == -1){
+                printf("No successor\n");
+            }
+            else{
+                printf("Sucessor is %d\n",res);
+            }
+        }
+        else if(op=='P'){
+            struct root* rt=root;
+            initiateTree(rt);
+            int sr;
+            printf("Enter an element to find predecessor of:\n");
+            scanf("%d",&sr);
+            int res = predecessor(root,root->r,sr);
+            if(res == -1){
+                printf("No predecessor\n");
+            }
+            else{
+                printf("Predecessor is %d\n",res);
+            }
+        }
+        else if(op=='E'){
+            lp++;
+        }
+        else{
+            printf("No valid command entered\n");
+        }
+    }
+
     return 0;
 }
