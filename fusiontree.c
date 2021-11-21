@@ -213,18 +213,18 @@ void fusionTreeInsertNonfull(struct FusionTree *p,int k, int ta){
 	}
 }
 void fusionTreeInsert(int k,int ta){
-	struct root *rty = root;
-	if(root->r->n == 2*ta-1){
+	struct FusionTree *r = root->r;
+	if(r->n == 2*ta-1){
 		struct FusionTree *s = allocateNode(ta);
 		s->leaf=0;
 		s->n=0;
 		s->next[0]=r;
 		root->r=s;
-		fusionTreeSplitChild(s,0,ta);
-		fusionTreeInsertNonfull(s,k,ta);
+		bTreeSplitChild(s,0,ta);
+		bTreeInsertNonfull(s,k,ta);
 	}
 	else{
-		fusionTreeInsertNonfull(rty->r,k,ta);
+		bTreeInsertNonfull(r,k,ta);
 	}
 }
 
@@ -397,7 +397,7 @@ void initiate(struct FusionTree* ft){
 }
 	
 void initiateTree(struct root* rt){
-	initiate(rt,root->r);
+	initiate(root->r);
 }
 
 int main(){
