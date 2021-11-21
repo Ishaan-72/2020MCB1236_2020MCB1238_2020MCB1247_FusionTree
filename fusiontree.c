@@ -309,7 +309,7 @@ int successor(struct root *rt,struct FusionTree *p,int data){
     }
     if(i==-1)return x;
 
-    int temp = common_prefix |= (1<<i);
+    int temp = common_prefix | (1<<i);
 
     pos = paracomp(rt,p,temp);
 
@@ -357,7 +357,7 @@ int predecessor(struct root *rt,struct FusionTree *p,int data){
     }
     if(i==-1)return x;
 
-    int temp = common_prefix |= (1<<i);
+    int temp = common_prefix | (1<<i);
 
     pos = paracomp(rt,p,temp);
 
