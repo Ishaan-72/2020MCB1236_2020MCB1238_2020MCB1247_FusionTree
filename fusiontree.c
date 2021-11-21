@@ -127,7 +127,8 @@ int sketchap(struct root* rt,struct FusionTree* p, int x){
     res = res & p->mask_bm;
     return res;
 }
-struct FusionTree *root;
+struct root *root;
+
 struct FusionTree* allocateNode(int tn){
 	struct FusionTree *temp;
 	temp=(struct FusionTree*)malloc(sizeof(struct FusionTree));
@@ -142,10 +143,11 @@ struct FusionTree* allocateNode(int tn){
 }
 //Creates a empty fusiontree
 void fusionTreeCreate(int ta){
-	struct FusionTree* temp = allocateNode(ta);//Allocates space and initialize values for root node
-	temp->n=0;
+	struct root* temp;
+	temp=(struct root*)malloc(sizeof(struct root));
+	temp->r = allocateNode(ta);//Allocates space and initialize values for root node
+	temp->r->n=0;
 	root = temp;
-	
 } 
 // Performs split child operation
 void fusionTreeSplitChild(struct FusionTree *p,int i,int ta){
@@ -244,18 +246,18 @@ void initiatenode(struct root* rt,struct FusionTree* p){
 }
 // This function use parallel comparision to compare keys in node
 int paracomp(struct root *rt,struct FusionTree *p,int data){
-int sketch = sketchap(rt,p,data);
-int sketch_long = sketch*p->mask_q;
-int res = p->node_sketch-sketch_long;
-res = res&p->mask_sketch;
-int i=0;
-while((1<<i)<res){
-    i++;
-}
-i++;
-int sketch_len = p->n*p->n*p->n+1;
-return (p->n-(i/sketch_len));
-}
-int main(){
+	int sketch = sketchap(rt,p,data);
+	int sketch_long = sketch*p->mask_q;
+	int res = p->node_sketch-sketch_long;
+	res = res&p->mask_sketch;
+	int i=0;
+	while((1<<i)<res){
+		i++;
+	}
+	i++;
+	int sketch_len = p->n*p->n*p->n+1;
+	return (p->n-(i/sketch_len));
+	}
+	int main(){
     return 0;
 }
