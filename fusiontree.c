@@ -215,6 +215,7 @@ void fusionTreeInsert(int k,int ta){
 
 //function to initiate a node of our fusion tree
 void initiatenode(struct root* rt,struct FusionTree* p){
+	p=NULL;
     if(p->n!=0){
         p->difbit = DiffBits(rt,p);//calling function to calculate differentiating bits
         p->masbit = Const(rt,p);//calling function to calculate making bits
