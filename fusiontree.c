@@ -391,14 +391,31 @@ void initiate(struct FusionTree* ft){
 void initiateTree(struct root* rt){
 	initiate(root->r);
 }
-
+void fusionTreeInorderTransverse(struct FusionTree *p,int ta){
+	if(p->leaf==1){
+		for(int i=0;i<p->n;i++){
+			printf("%d, ",p->key[i]);
+		}
+	}
+	if(p->leaf==0){
+		for(int i=0;i<p->n;i++){
+			if(p->next[i]!=NULL){
+				bTreeInorderTransverse(p->next[i],ta);
+			}
+			printf("%d, ",p->key[i]);
+		}
+		if(p->next[p->n]!=NULL){
+			bTreeInorderTransverse(p->next[p->n],ta);
+		}
+	}
+}
 int main(){
     fusionTreeCreate();
     
     int lp=0;
     while(lp==0){
         char op;
-		printf("options: I for insertion, S for sucessor, P for predecessor , E for exit\n");
+				printf("options: I for insertion, S for sucessor, P for predecessor , E for exit ,T for traversal\n");
         scanf(" %c",&op);
         if(op=='I'){
             printf("Enter number of elements you wanted to enter:");
@@ -443,6 +460,11 @@ int main(){
         else if(op=='E'){
             lp++;
         }
+	    else if(op=='T'){
+				printf("Inorder traversal is: ");
+				fusionTreeInorderTransverse(root->r,root->t);
+				printf("\n");
+			}
         else{
             printf("No valid command entered\n");
         }
