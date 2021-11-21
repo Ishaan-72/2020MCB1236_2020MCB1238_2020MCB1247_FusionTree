@@ -311,6 +311,77 @@ int successor(struct root *rt,struct FusionTree *p,int data){
     }
 }
 
+
+int predecessor(struct root *rt,struct FusionTree *p,int data){
+    if(p==NULL)p=rt->r;
+
+    if(p->n==0){
+        if(p->leaf==0)return -1;
+        else return predecessor(rt,p->next[0],data);
+    }
+
+    if(p->key[0]>data){
+        if(p->leaf==0)return predecessor(rt,p->next[0],data);
+        else return -1;
+    }
+    if(p->key[p->n-1]<=data){
+        if(p->leaf==1)return p->key[p->n-1];
+        else{
+            int ret= predecessor(rt,p->next[p->n],data);
+            return maxi(ret,p->key[p->n-1]);
+        }
+    }
+    int pos = paracomp(rt,p,data);
+
+    if(pos>=p->n){
+        printf("%d\n",pos);
+    }
+    if(pos==0){
+        pos++;
+    }
+
+    int x = p->key[pos];
+
+    int common_prefix = 0;
+    int i=rt->w;
+    while(i>=0 && ((x&(1<<i))==(data&(1<<i)))){
+        common_prefix |= x &(1<<i);
+        i--;
+    }
+    if(i==-1)return x;
+
+    int temp = common_prefix |= (1<<i);
+
+    pos = paracomp(rt,p,temp);
+
+    if(pos==0){
+        if(p->leaf==1)return p->key[pos];
+        int res = predecessor(rt,p->next[1],data);
+        if(res==-1)return p->key[pos];
+        else return res;
+    }
+
+    if(p->leaf==1)return p->key[pos-1];
+    else{
+        int res = predecessor(rt,p->next[pos],data);
+        if(res==-1)return p->key[pos-1];
+        else return res;
+    }
+
+}
+
+void initiate(struct FusionTree* ft){
+    if(ft==NULL){
+        ft=allocateNode(2);
+    }
+    initiatenode(root,ft);
+    if(ft->leaf == false){
+        for(int i=0;i<(root->keys_max+1);i++){
+            initiate(ft->next[i]);
+        }
+    }
+}
+
 int main(){
     return 0;
 }
