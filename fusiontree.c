@@ -3,6 +3,16 @@
 #include<stdbool.h>
 #include<math.h>
 
+int mini(int a, int b){
+    if(a>=b)return b;
+    else return a;
+}
+
+float maxi(float a, float b){
+    if(a>=b)return a;
+    else return b;
+}
+
 //Differentiating Bits Structure
 struct db{
     int r;
@@ -37,8 +47,7 @@ struct root{
     int wor_len;
     float c;
     float w;
-    int keys_max;
-    int keys_min;
+    int t;
 };
 
 //function to calculate the differentiating bits
@@ -142,11 +151,17 @@ struct FusionTree* allocateNode(int tn){
 	
 }
 //Creates a empty fusiontree
-void fusionTreeCreate(int ta){
+void fusionTreeCreate(){
 	struct root* temp;
 	temp=(struct root*)malloc(sizeof(struct root));
-	temp->r = allocateNode(ta);//Allocates space and initialize values for root node
 	temp->r->n=0;
+	temp->wor_len=64;
+	temp->c=0.2;
+	temp->t=maxi(pow(temp->wor_len,temp->c),2);
+	temp->w=pow(temp->t,1/temp->c);
+	int ta=2;
+	temp->r = allocateNode(ta);//Allocates space and initialize values for root node
+	
 	root = temp;
 } 
 // Performs split child operation
@@ -215,7 +230,6 @@ void fusionTreeInsert(int k,int ta){
 
 //function to initiate a node of our fusion tree
 void initiatenode(struct root* rt,struct FusionTree* p){
-	p=NULL;
     if(p->n!=0){
         p->difbit = DiffBits(rt,p);//calling function to calculate differentiating bits
         p->masbit = Const(rt,p);//calling function to calculate making bits
@@ -372,15 +386,17 @@ int predecessor(struct root *rt,struct FusionTree *p,int data){
 }
 
 void initiate(struct FusionTree* ft){
-    if(ft==NULL){
-        ft=allocateNode(2);
+    if(ft!=NULL){
+		initiatenode(root,ft);
+		if(ft->leaf == false){
+		for(int i=0;i<(root->keys_max+1);i++){
+			initiate(ft->next[i]);
+		}
     }
-    initiatenode(root,ft);
-    if(ft->leaf == false){
-        for(int i=0;i<(root->keys_max+1);i++){
-            initiate(ft->next[i]);
-        }
-    }
+}
+	
+void initiateTree(struct root* rt){
+	initiate(rt,root->r);
 }
 
 int main(){
