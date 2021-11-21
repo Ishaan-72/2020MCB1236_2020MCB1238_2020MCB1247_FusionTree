@@ -214,7 +214,7 @@ void fusionTreeInsertNonfull(struct FusionTree *p,int k, int ta){
 }
 void fusionTreeInsert(int k,int ta){
 	struct root *rty = root;
-	if(r->n == 2*ta-1){
+	if(root->r->n == 2*ta-1){
 		struct FusionTree *s = allocateNode(ta);
 		s->leaf=0;
 		s->n=0;
@@ -389,10 +389,11 @@ void initiate(struct FusionTree* ft){
     if(ft!=NULL){
 		initiatenode(root,ft);
 		if(ft->leaf == false){
-		for(int i=0;i<(root->keys_max+1);i++){
-			initiate(ft->next[i]);
-		}
-    }
+			for(int i=0;i<(ft->n+1);i++){
+				initiate(ft->next[i]);
+			}
+    	}
+	}
 }
 	
 void initiateTree(struct root* rt){
