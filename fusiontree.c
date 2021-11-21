@@ -154,14 +154,13 @@ struct FusionTree* allocateNode(int tn){
 void fusionTreeCreate(){
 	struct root* temp;
 	temp=(struct root*)malloc(sizeof(struct root));
-	temp->r->n=0;
 	temp->wor_len=64;
 	temp->c=0.2;
 	temp->t=maxi(pow(temp->wor_len,temp->c),2);
 	temp->w=pow(temp->t,1/temp->c);
 	int ta=2;
 	temp->r = allocateNode(ta);//Allocates space and initialize values for root node
-	
+	temp->r->n=0;
 	root = temp;
 } 
 // Performs split child operation
