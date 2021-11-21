@@ -56,7 +56,6 @@ struct db* DiffBits(struct root* rt,struct FusionTree* p){
     res=(struct db*)malloc(sizeof(struct db));
     int bits=0;
     for(int i=0;i<p->n;i++){
-        if(p->key[i]==0)break;
         for(int j=0;j<i;j++){
             int w=rt->w;
             while(((p->key[i] & 1 << w)==(p->key[j] & 1 << w)) && w>=0){
