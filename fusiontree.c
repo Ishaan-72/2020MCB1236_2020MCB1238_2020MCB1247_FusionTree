@@ -220,11 +220,11 @@ void fusionTreeInsert(int k,int ta){
 		s->n=0;
 		s->next[0]=r;
 		root->r=s;
-		bTreeSplitChild(s,0,ta);
-		bTreeInsertNonfull(s,k,ta);
+		fusionTreeSplitChild(s,0,ta);
+		fusionTreeInsertNonfull(s,k,ta);
 	}
 	else{
-		bTreeInsertNonfull(r,k,ta);
+		fusionTreeInsertNonfull(r,k,ta);
 	}
 }
 
