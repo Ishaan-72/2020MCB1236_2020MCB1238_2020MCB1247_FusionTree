@@ -46,7 +46,7 @@ struct root{
     struct FusionTree* r;// Pointer to root node
     int wor_len;
     float c;
-    float w;
+    int w;
     int t;
 };
 
@@ -156,7 +156,7 @@ void fusionTreeCreate(){
 	temp->wor_len=64;
 	temp->c=0.2;
 	temp->t=maxi(pow(temp->wor_len,temp->c),2);
-	temp->w=pow(temp->t,1/temp->c);
+	temp->w=64;
 	temp->r = allocateNode(temp->t);//Allocates space and initialize values for root node
 	temp->r->n=0;
 	root = temp;
