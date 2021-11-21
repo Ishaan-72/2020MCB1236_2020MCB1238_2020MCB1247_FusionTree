@@ -294,9 +294,7 @@ int successor(struct root *rt,struct FusionTree *p,int data){
 
     int pos = paracomp(rt,p,data);
 
-    if(pos>=p->n){
-        printf("%d\n",pos);
-    }
+    
     if(pos==0){
         pos++;
     }
@@ -345,9 +343,6 @@ int predecessor(struct root *rt,struct FusionTree *p,int data){
     }
     int pos = paracomp(rt,p,data);
 
-    if(pos>=p->n){
-        printf("%d\n",pos);
-    }
     if(pos==0){
         pos++;
     }
