@@ -257,7 +257,60 @@ int paracomp(struct root *rt,struct FusionTree *p,int data){
 	i++;
 	int sketch_len = p->n*p->n*p->n+1;
 	return (p->n-(i/sketch_len));
-	}
-	int main(){
+}
+
+int successor(struct root *rt,struct FusionTree *p,int data){
+    if(p==NULL)p=rt->r;
+
+    if(p->n==0){
+        if(p->leaf==1)return -1;
+        else return successor(rt,p->next[0],data);
+    }
+
+    if(p->key[0]>=data){
+        if(p->leaf==0){
+            int res = successor(rt,p->next[0],data);
+            if(res == -1)return p->key[0];
+            else return mini(p->key[0],res);
+        }
+        else return p->key[0];
+    }
+    if(p->key[p->n-1]<data){
+        if(p->leaf==true)return -1;
+        else return successor(rt,p->next[p->n],data);
+    }
+
+    int pos = paracomp(rt,p,data);
+
+    if(pos>=p->n){
+        printf("%d\n",pos);
+    }
+    if(pos==0){
+        pos++;
+    }
+
+    int x = maxi(p->key[pos-1],p->key[pos]);
+
+    int common_prefix = 0;
+    int i=rt->w;
+    while(i>0 && ((x&(1<<i))==(data&(1<<i)))){
+        common_prefix |= x &(1<<i);
+        i--;
+    }
+    if(i==-1)return x;
+
+    int temp = common_prefix |= (1<<i);
+
+    pos = paracomp(rt,p,temp);
+
+    if(p->leaf==1)return p->key[pos];
+    else{
+        int res = successor(rt,p->next[pos],data);
+        if(res==-1)return p->key[pos];
+        else return res;
+    }
+}
+
+int main(){
     return 0;
 }
