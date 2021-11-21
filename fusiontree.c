@@ -400,12 +400,12 @@ void fusionTreeInorderTransverse(struct FusionTree *p,int ta){
 	if(p->leaf==0){
 		for(int i=0;i<p->n;i++){
 			if(p->next[i]!=NULL){
-				bTreeInorderTransverse(p->next[i],ta);
+				fusionTreeInorderTransverse(p->next[i],ta);
 			}
 			printf("%d, ",p->key[i]);
 		}
 		if(p->next[p->n]!=NULL){
-			bTreeInorderTransverse(p->next[p->n],ta);
+			fusionTreeInorderTransverse(p->next[p->n],ta);
 		}
 	}
 }
